@@ -1,0 +1,16 @@
+{
+  "name": "pizza-builder",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Pizzeria ordering site with a photo-real pizza builder and AI ordering",
+  "scripts": {
+    "start": "node serve.js",
+    "test": "node tests/demo-parse.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0"
+  }
+}

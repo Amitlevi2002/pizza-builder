@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>פיצרייה</title>
+<meta name="theme-color" content="#d62818">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&family=Karantina:wght@400;700&family=Cairo:wght@400;600;700&family=Lalezar&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-phase="closed">
+<div id="intro" class="opener" hidden data-i18n-aria="a.intro"></div>
+
+<header class="top">
+  <a class="brand" href="#build" data-brand></a>
+  <nav>
+    <a href="#build" data-i18n="nav.build">בנו פיצה</a>
+    <a href="#drinks" data-i18n="nav.drinks">משקאות</a>
+    <a href="#info" data-i18n="nav.info">מידע</a>
+  </nav>
+  <button class="orderpill" id="orderPill" type="button" hidden></button>
+  <button class="cartbtn" id="cartBtn" type="button"><span data-i18n="cart">ההזמנה</span> · <b id="cartTotal">₪0</b></button>
+</header>
+
+<main id="main" tabindex="-1">
+<!-- ================= בונה הפיצה ================= -->
+<section id="build" class="surface">
+  <div class="intro">
+    <h1 data-i18n="h1">בנו את הפיצה שלכם</h1>
+    <p data-tagline></p>
+    <form class="aibox" id="aiForm" autocomplete="off">
+      <label for="aiText" data-i18n="ai.label">הזמנה חכמה</label>
+      <div class="airow">
+        <input id="aiText" maxlength="500" data-i18n-ph="ai.ph">
+        <button type="button" class="aimic" id="aiMic" hidden data-i18n-aria="ai.mic"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <button type="submit" class="aigo" id="aiGo" data-i18n="ai.go">הזמינו</button>
+      </div>
+      <p class="aireply" id="aiReply" aria-live="polite"></p>
+    </form>
+  </div>
+
+  <div class="builder">
+    <aside class="trays" data-i18n-aria="a.toppings">
+      <h2 data-i18n="toppings">התוספות</h2>
+      <div class="seg" id="placeSeg" role="group" data-i18n-aria="a.where">
+        <button type="button" data-v="right" data-i18n="place.right">חצי ימין</button>
+        <button type="button" data-v="full" class="on" data-i18n="place.full">כל הפיצה</button>
+        <button type="button" data-v="left" data-i18n="place.left">חצי שמאל</button>
+      </div>
+      <div class="traygrid" id="trays"></div>
+    </aside>
+
+    <div class="stage">
+      <div class="opts">
+        <div class="opt"><span data-i18n="opt.size">גודל</span><div class="seg" id="sizeSeg"></div></div>
+        <div class="opt"><span data-i18n="opt.crust">בצק</span><div class="seg" id="crustSeg"></div></div>
+        <div class="opt"><span data-i18n="opt.sauce">רוטב</span><div class="seg" id="sauceSeg"></div></div>
+      </div>
+
+      <div class="boxwrap">
+        <div class="box" id="box">
+          <div class="liner">
+            <div class="pz" id="pz" role="img" data-i18n-aria="a.pizza">
+              <img class="pzbase pzdough" src="img/l_dough.webp" alt="" draggable="false">
+              <img class="pzlayer pzsauce" id="pzSauce" src="img/l_sauce_tomato.webp" alt="" draggable="false">
+              <img class="pzlayer pzcheese" id="pzCheese" src="img/l_cheese_raw.webp" alt="" draggable="false">
+              <img class="pzbase pzbaked" id="pzBaked" src="img/pz_tomato_baked.webp" alt="" draggable="false">
+              <div id="tops"></div>
+              <div class="pzbake"></div>
+            </div>
+          </div>
+          <button class="lid" id="lid" type="button" data-i18n-aria="a.lid">
+            <svg class="doodle" viewBox="0 0 400 400" aria-hidden="true">
+              <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M40 70 l70 -22 l-18 78 z"/><circle cx="78" cy="74" r="6"/><circle cx="92" cy="96" r="5"/>
+                <path d="M330 300 l42 60 l-74 4 z"/><circle cx="336" cy="336" r="6"/><circle cx="352" cy="350" r="4"/>
+                <path d="M318 52 c18 -22 46 -8 40 16 c-6 22 -34 26 -44 8 c-5 -10 -3 -17 4 -24z"/><path d="M336 60 q8 10 2 22"/>
+                <path d="M46 318 c-10 22 8 44 30 38 c20 -6 22 -32 6 -42 c-12 -8 -28 -6 -36 4z"/><path d="M62 326 q12 4 14 18"/>
+                <path d="M150 40 q50 -18 100 0" stroke-dasharray="2 12"/><path d="M150 362 q50 16 100 0" stroke-dasharray="2 12"/>
+              </g>
+            </svg>
+            <span class="lidname" data-brand></span>
+            <span class="lidsub" data-kosher></span>
+            <span class="stamp" id="stamp" data-i18n="btn.closed">התחילו הזמנה</span>
+          </button>
+          <div class="heat" aria-hidden="true"></div>
+        </div>
+        <div class="timer" id="timer" aria-hidden="true"><span id="timerNum">3</span></div>
+      </div>
+
+      <div class="after" id="after">
+        <button type="button" class="btn ghost" id="morePizza" data-i18n="morePizza">+ עוד פיצה</button>
+        <a class="btn ghost" href="#drinks" data-i18n="toDrinks">למשקאות</a>
+      </div>
+    </div>
+
+    <aside class="receipt" data-i18n-aria="a.receipt">
+      <div class="paper">
+        <div class="rhead"><span data-brand></span><small data-i18n="yourOrder">ההזמנה שלכם</small></div>
+        <div id="lines"></div>
+        <div class="rtotal" aria-live="polite" aria-atomic="true"><span data-i18n="total">סה״כ</span><b id="rTotal">₪0</b></div>
+        <button type="button" class="btn primary" id="primary" data-i18n="btn.closed">התחילו הזמנה</button>
+        <div class="barcode" aria-hidden="true"></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ================= משקאות ================= -->
+<section id="drinks" class="drinks">
+  <div class="glow" aria-hidden="true"></div>
+  <header><small data-i18n="drinks.q">ומה שותים?</small><h2 data-i18n="drinks.h">משקאות קרים</h2></header>
+  <div class="bigname" id="bigName" aria-hidden="true"></div>
+  <div class="ringwrap">
+    <button type="button" class="arrow prev" id="dPrev" data-i18n-aria="a.prev"></button>
+    <div class="ring" id="ring"></div>
+    <button type="button" class="arrow next" id="dNext" data-i18n-aria="a.next"></button>
+  </div>
+  <div class="dinfo" aria-live="polite">
+    <h3 id="dName"></h3>
+    <p id="dSub"></p>
+    <div class="drow">
+      <b id="dPrice"></b>
+      <div class="stepper">
+        <button type="button" id="dMinus" data-i18n-aria="a.less1">−</button>
+        <span id="dQty">0</span>
+        <button type="button" id="dPlus" data-i18n-aria="a.more1">+</button>
+      </div>
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <button type="button" class="btn primary wide" id="toCheckout" data-i18n="toPay">לתשלום</button>
+</section>
+
+<!-- ================= מידע ================= -->
+<section id="info" class="info">
+  <div class="cards">
+    <div class="card"><h3 data-i18n="hours">שעות פתיחה</h3><dl id="hours"></dl></div>
+    <div class="card"><h3 data-i18n="where">איפה אנחנו</h3><p data-address></p><p><a data-phone></a></p><p class="kosher" data-kosher></p></div>
+    <div class="card"><h3 data-i18n="delivery">משלוחים ואיסוף</h3><p><span data-i18n="info.delivery">משלוח:</span> <span data-dtime></span> · <span data-dfee></span></p><p><span data-i18n="info.pickup">איסוף עצמי:</span> <span data-ptime></span></p></div>
+  </div>
+  <div class="faq">
+    <h2 data-i18n="faq">שאלות נפוצות</h2>
+    <div id="faq"></div>
+  </div>
+</section>
+</main>
+
+<footer><small class="credit"><span data-i18n="credit">צילומי מוצר</span> · </small><span data-brand></span> · <span data-address></span> · <a data-phone></a> · <a href="orders.html" class="a11y-link">מסך מטבח (דמו)</a></footer>
+
+<div class="bar" id="bar">
+  <div><small data-i18n="total">סה״כ</small><b id="barTotal">₪0</b></div>
+  <button type="button" class="btn primary" id="barPrimary" data-i18n="btn.closed">התחילו הזמנה</button>
+</div>
+
+<!-- ================= תשלום ================= -->
+<dialog id="checkout" aria-labelledby="coTitle">
+  <form method="dialog" class="closeform"><button data-i18n-aria="a.close">✕</button></form>
+  <div class="demo" data-i18n="demo">מצב הדגמה</div>
+
+  <div id="coForm">
+    <h2 id="coTitle" data-i18n="checkout">סיום הזמנה</h2>
+
+    <div class="seg big" id="methodSeg" role="group" data-i18n-aria="checkout">
+      <button type="button" data-v="delivery" class="on" data-i18n="m.delivery">משלוח</button>
+      <button type="button" data-v="pickup" data-i18n="m.pickup">איסוף עצמי</button>
+    </div>
+
+    <div class="fields">
+      <label><span data-i18n="f.name">שם מלא</span><input id="fName" autocomplete="name"></label>
+      <label><span data-i18n="f.phone">טלפון</span><input id="fPhone" inputmode="tel" autocomplete="tel" placeholder="050-0000000"></label>
+      <label class="deliv full"><span data-i18n="f.addr">כתובת למשלוח</span><input id="fAddr" autocomplete="street-address" data-i18n-ph="f.addrPh"></label>
+      <label class="deliv"><span data-i18n="f.apt">קומה / דירה</span><input id="fApt" autocomplete="address-line2"></label>
+      <label><span data-i18n="f.note">הערות</span><input id="fNote" data-i18n-ph="f.notePh"></label>
+    </div>
+
+    <h3 data-i18n="summary">סיכום</h3>
+    <div class="paper mini"><div id="coLines"></div><div class="rtotal"><span data-i18n="toPayTotal">לתשלום</span><b id="coTotal"></b></div></div>
+    <p class="adult" id="adultNote" data-i18n="adult"></p>
+
+    <h3 data-i18n="howPay">איך משלמים?</h3>
+    <div class="pays" id="pays" role="group" data-i18n-aria="howPay">
+      <button type="button" data-v="apple" class="pay apple">Apple Pay</button>
+      <button type="button" data-v="google" class="pay google"><i>G</i> Pay</button>
+      <button type="button" data-v="bit" class="pay bit">bit</button>
+      <button type="button" data-v="card" class="pay on" data-i18n="pay.cardBtn">כרטיס אשראי</button>
+      <button type="button" data-v="cash" class="pay" data-i18n="pay.cashBtn">מזומן</button>
+    </div>
+
+    <div class="cardform" id="cardForm">
+      <div class="ccard" aria-hidden="true">
+        <span class="chip"></span>
+        <span class="num" id="ccNum">•••• •••• •••• ••••</span>
+        <span class="who" id="ccWho" data-i18n="cardholder">שם בעל הכרטיס</span>
+        <span class="exp" id="ccExp">MM/YY</span>
+      </div>
+      <div class="fields">
+        <label class="full"><span data-i18n="f.cnum">מספר כרטיס</span><input id="cNum" autocomplete="off" inputmode="numeric" placeholder="4580 0000 0000 0000" maxlength="19" dir="ltr"></label>
+        <label><span data-i18n="f.exp">תוקף</span><input id="cExp" autocomplete="off" inputmode="numeric" placeholder="MM/YY" maxlength="5" dir="ltr"></label>
+        <label>CVV<input id="cCvv" autocomplete="off" inputmode="numeric" placeholder="123" maxlength="4" dir="ltr"></label>
+      </div>
+    </div>
+
+    <p class="err" id="coErr" role="alert"></p>
+    <button type="button" class="btn primary wide" id="payBtn">שלמו</button>
+  </div>
+
+  <div id="coDone" hidden>
+    <div class="donebox"><span data-brand></span></div>
+    <h2 data-i18n="done.received">ההזמנה התקבלה!</h2>
+    <p><span data-i18n="orderNoLabel">מספר הזמנה</span> <b id="orderNo"></b></p>
+    <p id="eta"></p>
+    <div class="editbox" id="editBox">
+      <p class="editmsg" id="editMsg" aria-live="polite"></p>
+      <div class="editbtns">
+        <button type="button" class="btn" id="changeOrder" data-i18n="changeOrder">שינוי ההזמנה</button>
+        <button type="button" class="btn ghost danger" id="cancelOrder" data-i18n="cancelOrder">ביטול ההזמנה</button>
+      </div>
+    </div>
+    <a class="btn wa" id="waLink" target="_blank" rel="noopener" href="#"><span data-i18n="wa.send">שליחת ההזמנה לפיצרייה בוואטסאפ</span></a>
+    <p class="muted" data-i18n="demoDone"></p>
+    <button type="button" class="btn primary wide" id="newOrder" data-i18n="close">סגירה</button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="config.js"></script>
+<script src="i18n.js"></script>
+<script src="a11y.js"></script>
+<script src="demo-parse.js"></script>
+<script src="app.js"></script>
+<script src="intro.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מסך מטבח · הזמנות</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&family=Karantina:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root { --red: #d62818; --ink: #1c1917; --paper: #fffdf7; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Heebo, system-ui, sans-serif; background: #1c1917; color: #fff; }
+  header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 16px; background: var(--red); position: sticky; top: 0; z-index: 2; }
+  h1 { margin: 0; font-family: Karantina, Heebo, sans-serif; font-size: 40px; line-height: 1; }
+  .live { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 14px; }
+  .live::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #7CFC8A; box-shadow: 0 0 0 4px rgba(124,252,138,.25); animation: p 1.4s infinite; }
+  @keyframes p { 50% { opacity: .35; } }
+  .tools { margin-inline-start: auto; display: flex; gap: 8px; }
+  button, a.b { font: inherit; font-weight: 700; border: 2px solid #fff; background: transparent; color: #fff; border-radius: 10px; padding: 8px 14px; cursor: pointer; text-decoration: none; }
+  button:hover, a.b:hover { background: #fff; color: var(--red); }
+  .note { margin: 12px 16px 0; padding: 10px 14px; border-radius: 10px; background: #2b2623; color: #e6dfd3; font-size: 14px; }
+  .grid { display: grid; gap: 14px; padding: 16px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .card { background: var(--paper); color: var(--ink); border-radius: 14px; padding: 14px; border-top: 8px solid #2f9e44; }
+  .card.updated { border-top-color: #f08c00; }
+  .card.cancelled { border-top-color: #868e96; opacity: .6; }
+  .card.done { border-top-color: #1c7ed6; }
+  .row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .no { font-family: Karantina, Heebo, sans-serif; font-size: 34px; line-height: 1; }
+  .st { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #e9ecef; }
+  .time { color: #6d665c; font-size: 13px; }
+  pre { font-family: inherit; white-space: pre-wrap; margin: 10px 0; font-size: 15px; line-height: 1.5; }
+  .who { font-size: 14px; border-top: 1px dashed #bdb5a6; padding-top: 8px; }
+  .tot { font-weight: 900; font-size: 20px; }
+  .card button { border-color: var(--ink); color: var(--ink); padding: 6px 12px; margin-top: 10px; width: 100%; }
+  .card button:hover { background: var(--ink); color: #fff; }
+  .empty { text-align: center; padding: 60px 16px; color: #bfb7aa; }
+</style>
+</head>
+<body>
+<header>
+  <h1>מסך מטבח</h1>
+  <span class="live">מתעדכן בזמן אמת</span>
+  <div class="tools">
+    <button type="button" id="csv">ייצוא לגיליון (CSV)</button>
+    <button type="button" id="clear">ניקוי</button>
+    <a class="b" href="index.html">לאתר</a>
+  </div>
+</header>
+<p class="note" id="mode"></p>
+<main class="grid" id="list" aria-live="polite"></main>
+<script src="config.js"></script>
+<script>
+  const C = window.CONFIG;
+  document.getElementById('mode').textContent = C.orderWebhook
+    ? 'מצב אמיתי: כל הזמנה נשלחת גם ל-Webhook שהוגדר ב-config.js (Make / Zapier / n8n), שמעביר אותה לוואטסאפ, לגיליון או למייל.'
+    : 'מצב הדגמה: ההזמנות נשמרות בדפדפן הזה בלבד. כדי לחבר לגיליון Google / וואטסאפ אמיתיים, מגדירים orderWebhook ב-config.js.';
+  const LABEL = { new: 'חדשה', updated: 'עודכנה', cancelled: 'בוטלה', done: 'יצאה' };
+  const load = () => { try { return JSON.parse(localStorage.getItem('orders') || '[]'); } catch (e) { return []; } };
+  const save = (all) => { try { localStorage.setItem('orders', JSON.stringify(all)); } catch (e) {} };
+  const esc = (s) => String(s || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  function render() {
+    const all = load(), list = document.getElementById('list');
+    if (!all.length) { list.innerHTML = '<p class="empty">עוד אין הזמנות. בצעו הזמנה באתר והיא תופיע כאן מיד.</p>'; return; }
+    list.innerHTML = all.map((o) => `
+      <article class="card ${o.status}">
+        <div class="row"><span class="no">${esc(o.no)}</span><span class="st">${LABEL[o.status] || o.status}</span></div>
+        <div class="time">${new Date(o.time).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })} · ${o.method === 'delivery' ? 'משלוח' : 'איסוף'}</div>
+        <pre>${esc(o.items)}</pre>
+        <div class="who">${esc(o.name)} · <a href="tel:${esc(o.phone)}">${esc(o.phone)}</a>${o.address ? '<br>' + esc(o.address) : ''}${o.note ? '<br>הערה: ' + esc(o.note) : ''}</div>
+        <div class="row"><span class="tot">₪${o.total}</span><span class="time">${esc(o.pay)}</span></div>
+        ${o.status !== 'cancelled' && o.status !== 'done' ? `<button type="button" data-done="${esc(o.no)}">סימון: יצאה למשלוח</button>` : ''}
+      </article>`).join('');
+  }
+  document.getElementById('list').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-done]'); if (!b) return;
+    const all = load(); const o = all.find((x) => x.no === b.dataset.done); if (o) { o.status = 'done'; save(all); render(); }
+  });
+  document.getElementById('csv').addEventListener('click', () => {
+    const cols = ['no', 'status', 'time', 'method', 'name', 'phone', 'address', 'items', 'note', 'pay', 'total'];
+    const rows = [cols.join(',')].concat(load().map((o) => cols.map((c) => `"${String(o[c] ?? '').replace(/"/g, '""')}"`).join(',')));
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + rows.join('\n')], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'orders.csv'; a.click();
+  });
+  document.getElementById('clear').addEventListener('click', () => { if (confirm('למחוק את כל ההזמנות מהמסך?')) { save([]); render(); } });
+  window.addEventListener('storage', (e) => { if (e.key === 'orders') render(); }); // new orders from the site tab appear instantly
+  render();
+</script>
+</body>
+</html>
