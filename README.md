@@ -1,5 +1,9 @@
 # Pizza Builder — photo-real pizza ordering with AI
 
+**Live demo: https://pizza-builder-dun.vercel.app** · Kitchen screen: https://pizza-builder-dun.vercel.app/orders.html
+
+Try typing in the smart-order box: `משפחתית חצי זיתים חצי פטריות, ושתי קולות` or `large white pizza with corn and a sprite`.
+
 A pizzeria ordering site where customers **build their pizza on a real cardboard box**, watch it go into the oven, and can also **just type (or say) their order** in Hebrew, English or Arabic.
 
 Built as a portfolio project with an AI-assisted workflow (Claude Code), from two reference videos to a working product.
