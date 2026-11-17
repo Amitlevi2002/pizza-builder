@@ -288,35 +288,6 @@ footer .credit { opacity: .7; }
 .can img { height: 186px; }
 .box.baked .tg { filter: drop-shadow(0 1.5px 1.5px rgba(40,20,0,.55)) brightness(.94) saturate(1.12); }
 
-/* ===== פתיח ===== */
-html.intro-on, html.intro-on body { overflow: hidden; }
-.opener { position: fixed; inset: 0; z-index: 100; background: #0b0907; overflow: hidden; transition: opacity .7s ease; }
-.opener.out { opacity: 0; pointer-events: none; }
-.ishot { position: absolute; inset: 0; opacity: 0; will-change: transform, opacity, filter; }
-.opener:not(.go) .ishot:first-child { opacity: 1; }
-.ishot img { width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; }
-.ifinal { display: grid; place-items: center;
-  background:
-    radial-gradient(ellipse 50% 34% at 14% 18%, rgba(255,255,255,.55), transparent 70%),
-    radial-gradient(ellipse 44% 30% at 86% 80%, rgba(255,255,255,.45), transparent 70%),
-    linear-gradient(140deg, #b9b6b1, #8e8b86 55%, #a29f9a); }
-.ibox { width: min(78vmin, 640px); aspect-ratio: 1; padding: 5%; border-radius: 10px; background: linear-gradient(145deg, #d3ad76, #c9a26b);
-  box-shadow: 0 0 0 2px #a67f48, 0 30px 60px rgba(0,0,0,.45), 0 8px 0 #a67f48; }
-.iliner { width: 100%; height: 100%; display: grid; place-items: center; background: #efe4cf; border-radius: 4px; box-shadow: inset 0 0 26px rgba(120,80,20,.35); }
-.iliner img { width: 92%; height: 92%; object-fit: contain; filter: drop-shadow(0 8px 10px rgba(60,40,10,.5)); }
-.isteam { position: absolute; left: 50%; top: 50%; width: 60vmin; height: 60vmin; margin: -30vmin 0 0 -30vmin; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(circle, rgba(255,255,255,.22), transparent 60%); filter: blur(20px); animation: steam 2.4s ease-in-out infinite alternate; }
-@keyframes steam { from { transform: translateY(4%) scale(.9); opacity: .35; } to { transform: translateY(-8%) scale(1.1); opacity: .75; } }
-.igrade { position: absolute; inset: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 75% 70% at 50% 50%, transparent 55%, rgba(0,0,0,.55)),
-    linear-gradient(rgba(255,150,60,.08), rgba(255,150,60,.08)); mix-blend-mode: normal; }
-.igrade::after { content: ""; position: absolute; inset: -50%; opacity: .12; animation: grain .5s steps(4) infinite;
-  background: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%27.9%27 numOctaves=%272%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27/%3E%3C/svg%3E"); }
-@keyframes grain { 0% { transform: translate(0,0); } 25% { transform: translate(-3%,2%); } 50% { transform: translate(2%,-3%); } 75% { transform: translate(-2%,-1%); } }
-.iskip { position: absolute; z-index: 2; bottom: calc(18px + env(safe-area-inset-bottom)); left: 18px; border: 1.5px solid rgba(255,255,255,.7); background: rgba(0,0,0,.35); color: #fff; border-radius: 999px; padding: 8px 18px; font-weight: 500; backdrop-filter: blur(6px); }
-.iskip:hover { background: #fff; color: #111; }
-
 /* ===== חומרים אמיתיים: משטח מקומח וקרטון ===== */
 .surface { background: #3b3936 url("img/surface.webp") center / cover no-repeat; }
 .intro h1 { text-shadow: 0 3px 0 var(--ink), 0 0 30px rgba(0,0,0,.5); }
@@ -342,10 +313,6 @@ html.intro-on, html.intro-on body { overflow: hidden; }
 .lid .doodle { opacity: .55; }
 body[data-phase="boxed"] .stamp { mix-blend-mode: normal; }
 
-/* the intro's final frame uses the same real materials */
-.ifinal { background: #3b3936 url("img/surface.webp") center / cover no-repeat; }
-.ibox { background: url("img/kraft.webp") center / cover; padding: 4.5%; border-radius: 6px; box-shadow: 0 0 0 1px rgba(70,45,20,.45), 0 30px 60px rgba(0,0,0,.5); }
-.iliner { background: url("img/kraft_in.webp") center / cover; border-radius: 2px; box-shadow: inset 0 9px 14px -4px rgba(60,35,10,.45), inset 7px 0 12px -6px rgba(60,35,10,.3); }
 
 /* ===== שלבי הכנה: בצק -> רוטב נמרח -> גבינה -> תנור ===== */
 .pzlayer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; user-select: none; }

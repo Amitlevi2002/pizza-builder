@@ -72,7 +72,6 @@ Change the pizzeria name, prices, menu, phone, WhatsApp number and webhook in **
 | `demo-parse.js` | Built-in multilingual order parser (demo mode) |
 | `ai-order.js`, `serve.js` | Server: Claude ordering endpoint, static files |
 | `orders.html` | Kitchen screen |
-| `intro.js` | 3-second opening animation |
 | `tests/` | Parser tests |
 | `CREDITS.txt` | Photo sources and licences |
 

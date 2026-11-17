@@ -452,6 +452,10 @@
     setPhase('closed');
     window.scrollTo({ top: 0 });
   }
+  function afterDoneClosed() {
+    if ($('#coDone').hidden || state.editing || !state.placed) return;
+    const keep = state.placed; resetOrder(); state.placed = keep; updateWindow();
+  }
   function bindCheckout() {
     $('#methodSeg').addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return;
@@ -478,12 +482,12 @@
     $('#cCvv').addEventListener('input', (e) => (e.target.value = e.target.value.replace(/\D/g, '')));
     $('#fName').addEventListener('input', (e) => ($('#ccWho').textContent = e.target.value || t('cardholder')));
     $('#payBtn').onclick = pay;
-    $('#newOrder').onclick = () => dlg.close();
+    $('#newOrder').onclick = () => { dlg.close(); afterDoneClosed(); };
     $('#changeOrder').onclick = changeOrder;
     $('#cancelOrder').onclick = cancelOrder;
     $('#orderPill').onclick = () => { if (state.placed) showDone(false); };
     // closing the confirmation empties the cart for a new order; the placed order stays editable from the header
-    dlg.addEventListener('close', () => { if (!$('#coDone').hidden && !state.editing) { const keep = state.placed; resetOrder(); state.placed = keep; updateWindow(); } });
+    dlg.addEventListener('close', afterDoneClosed);
   }
 
   /* ---------- כללי ---------- */
